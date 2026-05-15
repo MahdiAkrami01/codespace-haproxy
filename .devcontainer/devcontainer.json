@@ -1,9 +1,21 @@
 {
   "name": "HAProxy",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "dev",
+  "service": "haproxy",
   "workspaceFolder": "/workspaces/codespace-haproxy",
   "shutdownAction": "stopContainer",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  },
+
+  "runArgs": [
+    "--privileged",
+    "--cap-add=NET_ADMIN"
+  ],
+
   "customizations": {
     "codespaces": {
       "openFiles": [
