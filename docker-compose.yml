@@ -1,4 +1,11 @@
 services:
+  dev:
+      image: mcr.microsoft.com/devcontainers/base:debian
+      network_mode: host
+      volumes:
+        - .:/workspaces/codespace-haproxy:cached
+      command: sleep infinity
+
   haproxy:
     image: haproxy:lts-alpine
     container_name: haproxy
