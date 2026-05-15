@@ -1,13 +1,6 @@
 services:
-  dev:
-    image: mcr.microsoft.com/devcontainers/base:debian
-    network_mode: host
-    volumes:
-        - .:/workspaces/codespace-haproxy:cached
-    command: sleep infinity
-
   haproxy:
-    image: haproxy:lts-alpine
+    image: haproxy:lts-trixie
     container_name: haproxy
     user: root
     dns: 8.8.8.8
@@ -19,4 +12,5 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
+      - .:/workspaces/codespace-haproxy:cached
       - ./config:/usr/local/etc/haproxy:ro
