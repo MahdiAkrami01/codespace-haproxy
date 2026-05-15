@@ -1,13 +1,9 @@
 {
   "name": "HAProxy",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "haproxy",
+  "service": "dev",
+  "workspaceFolder": "/workspaces/codespace-haproxy",
   "shutdownAction": "stopContainer",
-  "runArgs": [
-    "--cap-add=NET_ADMIN",
-    "--privileged"
-  ],
-
   "customizations": {
     "codespaces": {
       "openFiles": [
