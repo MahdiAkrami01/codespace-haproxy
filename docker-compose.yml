@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  haproxy:
+    image: haproxy:lts-alpine
+    container_name: haproxy
+    user: root
+    dns: 8.8.8.8
+    network_mode: host
+    privileged: true
+    restart: always
+    environment:
+      - TZ=Asia/Tehran
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.tcp_fastopen=3
+    volumes:
+      - ./config:/usr/local/etc/haproxy:ro
