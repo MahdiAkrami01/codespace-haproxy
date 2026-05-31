@@ -17,5 +17,4 @@ services:
         hard: 65536
     volumes:
       - .:/workspaces/codespace-haproxy:cached
-      - ./sysctl.d/99-optimize.conf:/etc/sysctl.d:ro
       - ./config:/usr/local/etc/haproxy:ro
