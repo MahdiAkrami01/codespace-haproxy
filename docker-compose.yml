@@ -11,7 +11,6 @@ services:
       - TZ=Asia/Tehran
     cap_add:
       - NET_ADMIN
-      - SYS_RESOURCE
     ulimits:
       nofile:
         soft: 65536
