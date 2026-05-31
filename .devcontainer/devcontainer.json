@@ -20,7 +20,8 @@
 
   "runArgs": [
     "--privileged",
-    "--cap-add=NET_ADMIN"
+    "--cap-add=NET_ADMIN",
+    "--ulimit", "nofile=65536:65536"
   ],
 
   "postCreateCommand": ".devcontainer/setup.sh",
