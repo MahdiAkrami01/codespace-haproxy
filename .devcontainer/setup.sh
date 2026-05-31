@@ -1,30 +1,18 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Applying kernel and network optimizations..."
+sudo sysctl --system
 
-# FS Optimizations
-sudo sysctl -w fs.pipe-max-size=1048576
-sudo sysctl -w fs.file-max=2097152
+# Explicitly attach the FQ scheduler directly to eth0, bypassing global defaults
+if ip link show eth0 > /dev/null 2>&1; then
+    sudo tc qdisc replace dev eth0 root fq && echo "Success: attached fq scheduler to eth0"
+else
+    echo "Error: eth0 interface not found. Checking alternative host interfaces..."
+    # If using network_mode: host, the interface might be named differently (e.g., ens3, eth1)
+    ACTIVE_IFACE=$(ip -4 route show default | awk '{print $5}')
+    if [ ! -z "$ACTIVE_IFACE" ]; then
+        sudo tc qdisc replace dev "$ACTIVE_IFACE" root fq && echo "Success: attached fq scheduler to $ACTIVE_IFACE"
+    fi
+fi
 
-# Network Queue Discipline & Congestion Control
-sudo sysctl -w net.core.default_qdisc=fq
-sudo sysctl -w net.ipv4.tcp_congestion_control=bbr
-
-# TCP Buffer Memory Allocations
-sudo sysctl -w net.core.rmem_max=16777216
-sudo sysctl -w net.core.wmem_max=16777216
-sudo sysctl -w net.core.rmem_default=8388608
-sudo sysctl -w net.core.wmem_default=8388608
-sudo sysctl -w net.ipv4.tcp_rmem="4096 87380 16777216"
-sudo sysctl -w net.ipv4.tcp_wmem="4096 65536 16777216"
-
-# Window Scaling & Backlog Backpressure
-sudo sysctl -w net.ipv4.tcp_window_scaling=1
-sudo sysctl -w net.core.netdev_max_backlog=4096
-
-# Protocol Constraints (Disable MPTCP, Enable TFO)
-sudo sysctl -w net.mptcp.enabled=0
-sudo sysctl -w net.ipv4.tcp_fastopen=3
-
-echo "✅ All sysctl profiles loaded successfully into the host namespace."
+echo "✅ Network optimization routine completed."
