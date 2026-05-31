@@ -23,8 +23,6 @@
     "--cap-add=NET_ADMIN"
   ],
 
-  "postCreateCommand": ".devcontainer/setup.sh",
-
   "customizations": {
     "codespaces": {
       "openFiles": [
